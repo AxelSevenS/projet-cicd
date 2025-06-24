@@ -25,7 +25,7 @@ View the implementation --> [EcoAlerte](https://eco-web-helper-carcazown.replit.
 
 ### 1. Web Pages
 - **Homepage** (`/`): Hero section with compelling environmental messaging and call-to-action
-- **Information Page** (`/info`): Environmental data, statistics, and educational content
+- **Information Page** (`/info`): Environmental data, statistics, and educational ngdjsry;uru;ehtqdfblknmzrpjig<pijoheoijegzoij^<îjtebpj>>
 - **Quiz Page** (`/quiz`): Interactive environmental knowledge quiz with scoring
 - **Actions Page** (`/actions`): Practical eco-friendly tips categorized by home, transport, food, and waste
 - **Share Page** (`/share`): Social media integration for spreading awareness
