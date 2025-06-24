@@ -2,7 +2,7 @@
 
 ## Overview
 
-EcoAlerte is a French-language environmental awareness web platform designed for the "IA For Good" hackathon. The project aims to educate users about ecological issues through interactive content, quizzes, and actionable advice. The platform uses AI-generated content to create engaging educational experiences with the motto "Chaque clic compte pour la planète" (Every click counts for the planet).
+EcoAlerte is a French-language environmental awareness web platform designed for the "IA For Good" hackathon at Ynov Aix En Provence France. The project aims to educate users about ecological issues through interactive content, quizzes, and actionable advice. The platform uses AI-generated content to create engaging educational experiences with the motto "Chaque clic compte pour la planète" (Every click counts for the planet).
 
 ## System Architecture
 
@@ -34,14 +34,14 @@ EcoAlerte is a French-language environmental awareness web platform designed for
 
 ### 3. Static Assets
 - **CSS**: Custom styling with CSS variables for ecological color scheme (greens, blues)
-- **JavaScript**: 
+- **JavaScript**:
   - `script.js`: General site functionality, animations, counters
   - `quiz.js`: Interactive quiz logic with timer and progress tracking
 
 ## Data Flow
 
 1. **User Navigation**: Users access different pages through Flask routes
-2. **Quiz Interaction**: 
+2. **Quiz Interaction**:
    - Frontend collects quiz answers via JavaScript
    - Answers submitted to `/api/quiz/submit` endpoint
    - Backend processes answers and returns results
