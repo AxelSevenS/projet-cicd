@@ -4,6 +4,8 @@
 
 EcoAlerte is a French-language environmental awareness web platform designed for the "IA For Good" hackathon at Ynov Aix En Provence France. The project aims to educate users about ecological issues through interactive content, quizzes, and actionable advice. The platform uses AI-generated content to create engaging educational experiences with the motto "Chaque clic compte pour la planète" (Every click counts for the planet).
 
+View the implementation --> [EcoAlerte](https://eco-web-helper-carcazown.replit.app/)
+
 ## System Architecture
 
 ### Frontend Architecture
@@ -86,6 +88,31 @@ EcoAlerte is a French-language environmental awareness web platform designed for
 Changelog:
 - June 18, 2025. Initial setup
 
+
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+### Language Support
+- **Default Language**: French
+
+### Accessibility Features
+- **Color Contrast**: High-contrast mode for visually impaired users
+- **Keyboard Navigation**: Full support for tab-based navigation
+- **Screen Reader Compatibility**: ARIA roles and labels for enhanced accessibility
+
+### Customization Options
+- **Theme Selection**: Light and dark mode toggle
+- **Font Size Adjustment**: Slider for adjusting text size
+- **Quiz Settings**: Option to enable/disable timer and adjust difficulty level
+
+## Hosting on Personal VM
+
+### Personal VM Deployment
+- **Platform**: Hosted on a personal virtual machine managed by Rokkuro
+- **Web Server**: Gunicorn bound to 0.0.0.0:5000
+- **Environment**: Custom Linux-based VM with Python 3.11 and PostgreSQL
+
+## Authors
+
+- **Guillaume Pham**: [GitHub Profile](https://github.com/GuillaumePham)
+- **Rokkuro**: [GitHub Profile](https://github.com/Rokkuro)
+
