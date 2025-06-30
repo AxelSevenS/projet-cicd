@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Erreur {{ error_code }} - EcoAlerte{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="error-content">
+                    <div class="error-icon mb-4">
+                        {% if error_code == 404 %}
+                            <i class="fas fa-search fa-5x text-muted"></i>
+                        {% elif error_code == 403 %}
+                            <i class="fas fa-lock fa-5x text-warning"></i>
+                        {% elif error_code == 429 %}
+                            <i class="fas fa-clock fa-5x text-info"></i>
+                        {% else %}
+                            <i class="fas fa-exclamation-triangle fa-5x text-danger"></i>
+                        {% endif %}
+                    </div>
+
+                    <h1 class="display-1 fw-bold text-primary">{{ error_code }}</h1>
+                    <h2 class="mb-4">{{ error_message }}</h2>
+
+                    {% if error_code == 404 %}
+                        <p class="lead mb-4">
+                            La page que vous recherchez n'existe pas ou a été déplacée.
+                        </p>
+                    {% elif error_code == 403 %}
+                        <p class="lead mb-4">
+                            Vous n'avez pas les permissions nécessaires pour accéder à cette ressource.
+                        </p>
+                    {% elif error_code == 429 %}
+                        <p class="lead mb-4">
+                            Vous avez effectué trop de requêtes. Veuillez patienter avant de réessayer.
+                        </p>
+                    {% elif error_code == 500 %}
+                        <p class="lead mb-4">
+                            Une erreur inattendue s'est produite. Nos équipes ont été notifiées.
+                        </p>
+                    {% else %}
+                        <p class="lead mb-4">
+                            Une erreur s'est produite lors du traitement de votre demande.
+                        </p>
+                    {% endif %}
+
+                    <div class="error-actions">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-home"></i> Retour à l'accueil
+                        </a>
+                        <button onclick="history.back()" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Page précédente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Eco Tips Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="mb-4">
+                    <i class="fas fa-lightbulb text-success"></i>
+                    En attendant, voici un conseil écologique
+                </h3>
+                <div class="eco-tip-card">
+                    <p class="lead" id="eco-tip">
+                        Éteindre les appareils en veille peut vous faire économiser jusqu'à 10% sur votre facture électrique.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.error-content {
+    padding: 3rem 0;
+}
+
+.error-icon {
+    animation: pulse 2s infinite;
+}
+
+.eco-tip-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #28a745;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+</style>
+
+<script>
+// Random eco tips
+const ecoTips = [
+    "Éteindre les appareils en veille peut vous faire économiser jusqu'à 10% sur votre facture électrique.",
+    "Une ampoule LED consomme 80% moins d'énergie qu'une ampoule incandescente.",
+    "Privilégier les douches aux bains peut économiser jusqu'à 100 litres d'eau.",
+    "Le tri sélectif permet de recycler 60% de nos déchets ménagers.",
+    "Utiliser les transports en commun réduit votre empreinte carbone de 45%."
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tipElement = document.getElementById('eco-tip');
+    const randomTip = ecoTips[Math.floor(Math.random() * ecoTips.length)];
+    tipElement.textContent = randomTip;
+});
+</script>
+{% endblock %}

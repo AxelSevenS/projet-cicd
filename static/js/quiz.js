@@ -11,7 +11,7 @@ class EcoQuiz {
         this.startTime = null;
         this.timer = null;
         this.timeElapsed = 0;
-        
+
         // Initialize quiz when DOM is loaded
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.init());
@@ -25,13 +25,13 @@ class EcoQuiz {
      */
     init() {
         console.log('EcoQuiz initialized');
-        
+
         // Cache DOM elements
         this.cacheElements();
-        
+
         // Setup event listeners
         this.setupEventListeners();
-        
+
         // Start quiz
         this.startQuiz();
     }
@@ -62,19 +62,19 @@ class EcoQuiz {
         this.elements.prevBtn.addEventListener('click', () => this.previousQuestion());
         this.elements.nextBtn.addEventListener('click', () => this.nextQuestion());
         this.elements.submitBtn.addEventListener('click', () => this.submitQuiz());
-        
+
         // Retry button
         if (this.elements.retryBtn) {
             this.elements.retryBtn.addEventListener('click', () => this.restartQuiz());
         }
-        
+
         // Answer selection
         document.addEventListener('change', (e) => {
             if (e.target.type === 'radio') {
                 this.handleAnswerSelection(e.target);
             }
         });
-        
+
         // Keyboard navigation (accessibility)
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' && !e.ctrlKey && !e.shiftKey) {
@@ -94,10 +94,10 @@ class EcoQuiz {
         this.answers = {};
         this.updateDisplay();
         this.startTimer();
-        
+
         // Show first question
         this.showQuestion(1);
-        
+
         // Focus on first answer for accessibility
         const firstAnswer = document.querySelector('.question-card.active input[type="radio"]');
         if (firstAnswer) {
@@ -131,26 +131,26 @@ class EcoQuiz {
     handleAnswerSelection(radio) {
         const questionName = radio.name;
         const value = radio.value;
-        
+
         // Store answer
         this.answers[questionName] = value;
-        
+
         // Visual feedback
         const answerOptions = document.querySelectorAll(`input[name="${questionName}"]`);
         answerOptions.forEach(option => {
             const label = option.closest('.answer-option');
             label.classList.remove('selected');
         });
-        
+
         const selectedLabel = radio.closest('.answer-option');
         selectedLabel.classList.add('selected');
-        
+
         // Add selection animation
         selectedLabel.style.transform = 'scale(1.02)';
         setTimeout(() => {
             selectedLabel.style.transform = 'scale(1)';
         }, 200);
-        
+
         // Auto-advance after selection (with delay for user feedback)
         setTimeout(() => {
             if (this.currentQuestion < this.totalQuestions) {
@@ -169,16 +169,16 @@ class EcoQuiz {
         this.elements.questionCards.forEach(card => {
             card.classList.remove('active');
         });
-        
+
         // Show current question
         const currentCard = document.querySelector(`[data-question="q${questionNumber}"]`);
         if (currentCard) {
             currentCard.classList.add('active');
-            
+
             // Add entrance animation
             currentCard.style.opacity = '0';
             currentCard.style.transform = 'translateX(30px)';
-            
+
             setTimeout(() => {
                 currentCard.style.opacity = '1';
                 currentCard.style.transform = 'translateX(0)';
@@ -192,14 +192,14 @@ class EcoQuiz {
     updateDisplay() {
         // Update question counter
         this.elements.currentQuestionEl.textContent = this.currentQuestion;
-        
+
         // Update progress bar
         const progress = (this.currentQuestion / this.totalQuestions) * 100;
         this.elements.progressBar.style.width = `${progress}%`;
-        
+
         // Update navigation buttons
         this.elements.prevBtn.disabled = this.currentQuestion === 1;
-        
+
         if (this.currentQuestion === this.totalQuestions) {
             this.elements.nextBtn.style.display = 'none';
             this.elements.submitBtn.style.display = 'inline-block';
@@ -242,7 +242,7 @@ class EcoQuiz {
                 unansweredQuestions.push(i);
             }
         }
-        
+
         if (unansweredQuestions.length > 0) {
             EcoUtils.showNotification(
                 `Veuillez répondre à toutes les questions. Questions manquantes: ${unansweredQuestions.join(', ')}`,
@@ -250,14 +250,20 @@ class EcoQuiz {
             );
             return;
         }
-        
+
         // Stop timer
         clearInterval(this.timer);
-        
+
         // Show loading state
         this.elements.submitBtn.disabled = true;
-        this.elements.submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calcul du score...';
-        
+        // Create loading content safely
+        this.elements.submitBtn.textContent = '';
+        const spinner = document.createElement('i');
+        spinner.className = 'fas fa-spinner fa-spin';
+        const loadingText = document.createTextNode(' Calcul du score...');
+        this.elements.submitBtn.appendChild(spinner);
+        this.elements.submitBtn.appendChild(loadingText);
+
         try {
             // Submit to backend
             const response = await fetch('/api/quiz/submit', {
@@ -270,21 +276,26 @@ class EcoQuiz {
                     timeElapsed: this.timeElapsed
                 })
             });
-            
+
             if (!response.ok) {
                 throw new Error('Erreur lors de la soumission du quiz');
             }
-            
+
             const results = await response.json();
             this.displayResults(results);
-            
+
         } catch (error) {
             console.error('Quiz submission error:', error);
             EcoUtils.showNotification('Erreur lors de la soumission du quiz. Veuillez réessayer.', 'danger');
-            
+
             // Reset submit button
             this.elements.submitBtn.disabled = false;
-            this.elements.submitBtn.innerHTML = '<i class="fas fa-check"></i> Terminer le Quiz';
+            this.elements.submitBtn.textContent = '';
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-check';
+            const text = document.createTextNode(' Terminer le Quiz');
+            this.elements.submitBtn.appendChild(icon);
+            this.elements.submitBtn.appendChild(text);
         }
     }
 
@@ -295,20 +306,20 @@ class EcoQuiz {
         // Hide quiz container
         this.elements.quizContainer.style.display = 'none';
         document.querySelector('.quiz-navigation').style.display = 'none';
-        
+
         // Show results section
         this.elements.resultsSection.style.display = 'block';
-        
+
         // Update results content
         document.getElementById('score-percentage').textContent = `${Math.round(results.percentage)}%`;
         document.getElementById('score-fraction').textContent = `${results.score}/${results.total}`;
         document.getElementById('eco-level').textContent = results.level;
         document.getElementById('results-message').textContent = results.message;
-        
+
         // Update results icon and title based on score
         const resultsIcon = document.getElementById('results-emoji');
         const resultsTitle = document.getElementById('results-title');
-        
+
         if (results.percentage >= 80) {
             resultsIcon.className = 'fas fa-trophy fa-4x text-warning';
             resultsTitle.textContent = 'Excellent ! 🏆';
@@ -322,16 +333,16 @@ class EcoQuiz {
             resultsIcon.className = 'fas fa-seedling fa-4x text-info';
             resultsTitle.textContent = 'C\'est un début ! 🌱';
         }
-        
+
         // Create score chart
         this.createScoreChart(results.percentage);
-        
+
         // Add completion time
         this.addCompletionTime();
-        
+
         // Scroll to results
         this.elements.resultsSection.scrollIntoView({ behavior: 'smooth' });
-        
+
         // Add confetti effect for high scores
         if (results.percentage >= 80) {
             this.showConfetti();
@@ -344,45 +355,45 @@ class EcoQuiz {
     createScoreChart(percentage) {
         const canvas = document.getElementById('score-chart');
         const ctx = canvas.getContext('2d');
-        
+
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         // Chart configuration
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const radius = 80;
         const lineWidth = 12;
-        
+
         // Background circle
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         ctx.strokeStyle = '#e9ecef';
         ctx.lineWidth = lineWidth;
         ctx.stroke();
-        
+
         // Animated progress circle
         const startAngle = -Math.PI / 2;
         const endAngle = startAngle + (2 * Math.PI * percentage / 100);
-        
+
         // Color based on score
         let color = '#28a745'; // Green
         if (percentage < 40) color = '#dc3545'; // Red
         else if (percentage < 60) color = '#fd7e14'; // Orange
         else if (percentage < 80) color = '#007bff'; // Blue
-        
+
         // Animate the progress circle
         let currentAngle = startAngle;
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             // Background circle
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
             ctx.strokeStyle = '#e9ecef';
             ctx.lineWidth = lineWidth;
             ctx.stroke();
-            
+
             // Progress circle
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, startAngle, currentAngle);
@@ -390,14 +401,14 @@ class EcoQuiz {
             ctx.lineWidth = lineWidth;
             ctx.lineCap = 'round';
             ctx.stroke();
-            
+
             currentAngle += (endAngle - startAngle) / 60; // 60 frames animation
-            
+
             if (currentAngle < endAngle) {
                 requestAnimationFrame(animate);
             }
         };
-        
+
         setTimeout(animate, 500); // Start animation after delay
     }
 
@@ -408,15 +419,22 @@ class EcoQuiz {
         const minutes = Math.floor(this.timeElapsed / 60);
         const seconds = this.timeElapsed % 60;
         const timeString = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
-        
+
         const timeElement = document.createElement('div');
         timeElement.className = 'completion-time mt-3';
-        timeElement.innerHTML = `
-            <small class="text-muted">
-                <i class="fas fa-clock"></i> Temps de completion: ${timeString}
-            </small>
-        `;
-        
+
+        const smallElement = document.createElement('small');
+        smallElement.className = 'text-muted';
+
+        const clockIcon = document.createElement('i');
+        clockIcon.className = 'fas fa-clock';
+
+        const timeText = document.createTextNode(` Temps de completion: ${timeString}`);
+
+        smallElement.appendChild(clockIcon);
+        smallElement.appendChild(timeText);
+        timeElement.appendChild(smallElement);
+
         const resultsMessage = document.getElementById('results-message');
         resultsMessage.parentNode.insertBefore(timeElement, resultsMessage.nextSibling);
     }
@@ -437,7 +455,7 @@ class EcoQuiz {
             z-index: 9999;
         `;
         document.body.appendChild(confettiContainer);
-        
+
         for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
             confetti.style.cssText = `
@@ -452,7 +470,7 @@ class EcoQuiz {
             `;
             confettiContainer.appendChild(confetti);
         }
-        
+
         // Add CSS animation
         const style = document.createElement('style');
         style.textContent = `
@@ -464,7 +482,7 @@ class EcoQuiz {
             }
         `;
         document.head.appendChild(style);
-        
+
         // Clean up after animation
         setTimeout(() => {
             confettiContainer.remove();
@@ -480,33 +498,38 @@ class EcoQuiz {
         this.currentQuestion = 1;
         this.answers = {};
         this.timeElapsed = 0;
-        
+
         // Clear timer
         if (this.timer) {
             clearInterval(this.timer);
         }
-        
+
         // Reset UI
         this.elements.resultsSection.style.display = 'none';
         this.elements.quizContainer.style.display = 'block';
         document.querySelector('.quiz-navigation').style.display = 'flex';
-        
+
         // Clear selections
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.checked = false;
         });
-        
+
         document.querySelectorAll('.answer-option').forEach(option => {
             option.classList.remove('selected');
         });
-        
+
         // Reset submit button
         this.elements.submitBtn.disabled = false;
-        this.elements.submitBtn.innerHTML = '<i class="fas fa-check"></i> Terminer le Quiz';
-        
+        this.elements.submitBtn.textContent = '';
+        const resetIcon = document.createElement('i');
+        resetIcon.className = 'fas fa-check';
+        const resetText = document.createTextNode(' Terminer le Quiz');
+        this.elements.submitBtn.appendChild(resetIcon);
+        this.elements.submitBtn.appendChild(resetText);
+
         // Start fresh
         this.startQuiz();
-        
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
