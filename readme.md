@@ -1,118 +1,81 @@
-# EcoAlerte - Environmental Awareness Platform
+# 🌍 EcoAlerte – Environmental Awareness Platform
 
-## Overview
+## 🔥 Présentation
 
-EcoAlerte is a French-language environmental awareness web platform designed for the "IA For Good" hackathon at Ynov Aix En Provence France. The project aims to educate users about ecological issues through interactive content, quizzes, and actionable advice. The platform uses AI-generated content to create engaging educational experiences with the motto "Chaque clic compte pour la planète" (Every click counts for the planet).
+EcoAlerte est une plateforme web de sensibilisation à l’environnement développée pour le hackathon **"IA For Good"** à **Ynov Aix-en-Provence**.  
+Son but : éduquer les utilisateurs via des quiz, du contenu interactif et des conseils concrets, le tout généré dynamiquement grâce à l’IA.
 
-View the implementation --> [EcoAlerte](https://eco-web-helper-carcazown.replit.app/)
+> 🌱 *Chaque clic compte pour la planète.*
 
-## System Architecture
+🔗 **Démo en ligne :** [EcoAlerte](https://eco-web-helper-carcazown.replit.app/)
 
-### Frontend Architecture
-- **Framework**: Traditional HTML templates with Jinja2 templating
-- **Styling**: Bootstrap 5.3.0 for responsive design with custom CSS
-- **JavaScript**: Vanilla JavaScript for interactivity (quiz functionality, animations, counters)
-- **Icons**: Font Awesome 6.4.0 for consistent iconography
-- **Fonts**: Google Fonts (Poppins) for modern typography
+---
 
-### Backend Architecture
-- **Framework**: Flask 3.1.1 (Python web framework)
-- **Application Structure**: Simple Flask app with route-based architecture
-- **Session Management**: Flask sessions with secret key configuration
-- **Logging**: Python's built-in logging module for debugging
+## 🏗️ Architecture Technique
 
-## Key Components
+### 🎨 Frontend
+- **HTML + Jinja2**
+- **Bootstrap 5.3.0** + CSS personnalisé
+- **JavaScript natif** (quiz, animations, compteurs)
+- **Font Awesome 6.4.0**
+- **Google Fonts** (Poppins)
 
-### 1. Web Pages
-- **Homepage** (`/`): Hero section with compelling environmental messaging and call-to-action
-- **Information Page** (`/info`): Environmental data, statistics, and educational content
-- **Quiz Page** (`/quiz`): Interactive environmental knowledge quiz with scoring
-- **Actions Page** (`/actions`): Practical eco-friendly tips categorized by home, transport, food, and waste
-- **Share Page** (`/share`): Social media integration for spreading awareness
+### 🔧 Backend
+- **Flask 3.1.1**
+- Structure par routes
+- Sessions sécurisées (`SESSION_SECRET`)
+- Logging avec module Python `logging`
 
-### 2. API Endpoints
-- **Quiz Submission** (`/api/quiz/submit`): POST endpoint for handling quiz answers and calculating scores
-- Scoring logic with predefined correct answers for environmental questions
+### 📄 Pages Clés
+- `/` : Page d’accueil avec message fort + CTA
+- `/info` : Données écologiques, chiffres clés
+- `/quiz` : Quiz interactif avec score
+- `/actions` : Conseils pratiques classés (maison, transport, etc.)
+- `/share` : Partage réseaux sociaux
 
-### 3. Static Assets
-- **CSS**: Custom styling with CSS variables for ecological color scheme (greens, blues)
-- **JavaScript**:
-  - `script.js`: General site functionality, animations, counters
-  - `quiz.js`: Interactive quiz logic with timer and progress tracking
+### 🔌 API
+- `POST /api/quiz/submit` : Traitement et score du quiz
 
-## Data Flow
+---
 
-1. **User Navigation**: Users access different pages through Flask routes
-2. **Quiz Interaction**:
-   - Frontend collects quiz answers via JavaScript
-   - Answers submitted to `/api/quiz/submit` endpoint
-   - Backend processes answers and returns results
-3. **Content Display**: Jinja2 templates render dynamic content
-4. **Social Sharing**: JavaScript functions handle social media integration
+## 📂 Fichiers Statics
 
-## External Dependencies
+- `script.js` : fonctionnalités globales, animations
+- `quiz.js` : logique quiz (timer, progression)
+- `style.css` : thème écologique vert/bleu
+- Icônes Font Awesome + typographie Poppins
 
-### Python Packages
-- **Flask 3.1.1**: Web framework
-- **Flask-SQLAlchemy 3.1.1**: Database ORM (prepared for future database integration)
-- **Gunicorn 23.0.0**: WSGI HTTP server for production deployment
-- **psycopg2-binary 2.9.10**: PostgreSQL adapter (for future database needs)
-- **email-validator 2.2.0**: Email validation utilities
+---
 
-### Frontend Libraries
-- **Bootstrap 5.3.0**: CSS framework via CDN
-- **Font Awesome 6.4.0**: Icon library via CDN
-- **Google Fonts**: Poppins font family via CDN
-- **Chart.js**: Charting library for quiz results visualization
+## 🔃 CI/CD – Intégration & Déploiement Continu
 
-## Deployment Strategy
+### ⚙️ Intégration Continue (CI) – *GitHub Actions*
 
-### Development Environment
-- **Runtime**: Python 3.11 on Nix stable-24_05
-- **Development Server**: Flask development server with debug mode
-- **Hot Reload**: Gunicorn with `--reload` flag for development
+Déclenchée à chaque `push` ou `pull request` sur `main` et `dev` :
+1. **Install** : `pip install -r requirements.txt`
+2. **Lint** : `flake8`, `pylint`
+3. **Test** : démarrage de `flask run` avec vérification santé
 
-### Production Deployment
-- **Platform**: Replit autoscale deployment
-- **Web Server**: Gunicorn bound to 0.0.0.0:5000
-- **Process Management**: Gunicorn handles multiple workers
-- **Environment**: Nix-based environment with OpenSSL and PostgreSQL packages
+📦 **Secrets protégés via GitHub Secrets** :
+- `SESSION_SECRET`
+- Variables PostgreSQL
 
-### Configuration
-- **Session Secret**: Environment variable `SESSION_SECRET` with fallback
-- **Port Configuration**: Configurable via environment, defaults to 5000
-- **Logging**: DEBUG level logging enabled for development
+---
 
-## Changelog
+### 🚀 Déploiement Continu (CD)
 
-Changelog:
-- June 18, 2025. Initial setup
+#### 🟢 Replit (Production Live)
+- Déploiement auto sur `main`
+- Gunicorn configuré : `0.0.0.0:5000`
+- Environnement Nix + autoscale activé
 
+#### 🖥️ VM Personnelle (Backup)
+- Pull automatique via `cron`
+- Redémarrage via `systemd`
+- Gunicorn multithread
 
-## User Preferences
-
-### Language Support
-- **Default Language**: French
-
-### Accessibility Features
-- **Color Contrast**: High-contrast mode for visually impaired users
-- **Keyboard Navigation**: Full support for tab-based navigation
-- **Screen Reader Compatibility**: ARIA roles and labels for enhanced accessibility
-
-### Customization Options
-- **Theme Selection**: Light and dark mode toggle
-- **Font Size Adjustment**: Slider for adjusting text size
-- **Quiz Settings**: Option to enable/disable timer and adjust difficulty level
-
-## Hosting on Personal VM
-
-### Personal VM Deployment
-- **Platform**: Hosted on a personal virtual machine managed by Rokkuro
-- **Web Server**: Gunicorn bound to 0.0.0.0:5000
-- **Environment**: Custom Linux-based VM with Python 3.11 and PostgreSQL
-
-## Authors
-
-- **Guillaume Pham**: [GitHub Profile](https://github.com/GuillaumePham)
-- **Rokkuro**: [GitHub Profile](https://github.com/Rokkuro)
-
+#### 🧪 Environnement :
+```bash
+SESSION_SECRET=<secret>
+PORT=5000
+FLASK_ENV=production
