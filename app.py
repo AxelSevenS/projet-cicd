@@ -2,12 +2,13 @@ import os
 import logging
 from flask import Flask, render_template, request, jsonify
 
+is_debug = os.getenv('FLASK_DEBUG', '0') == '1'
+app = Flask(__name__)
+
 # Configure logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG if is_debug else logging.INFO)
 
 # Create the app
-app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "eco_alerte_secret_key_2024")
 
 # Routes
 @app.route('/')
@@ -88,4 +89,4 @@ def submit_quiz():
         return jsonify({'success': False, 'error': 'Une erreur est survenue'}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=is_debug)
