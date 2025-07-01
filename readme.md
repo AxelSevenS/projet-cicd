@@ -2,7 +2,7 @@
 
 ## 🔥 Présentation
 
-EcoAlerte est une plateforme web de sensibilisation à l’environnement développée pour le hackathon **"IA For Good"** à **Ynov Aix-en-Provence**.  
+EcoAlerte est une plateforme web de sensibilisation à l’environnement développée pour le hackathon **"IA For Good"** à **Ynov Aix-en-Provence**.
 Son but : éduquer les utilisateurs via des quiz, du contenu interactif et des conseils concrets, le tout généré dynamiquement grâce à l’IA.
 
 > 🌱 *Chaque clic compte pour la planète.*
@@ -23,7 +23,6 @@ Son but : éduquer les utilisateurs via des quiz, du contenu interactif et des c
 ### 🔧 Backend
 - **Flask 3.1.1**
 - Structure par routes
-- Sessions sécurisées (`SESSION_SECRET`)
 - Logging avec module Python `logging`
 
 ### 📄 Pages Clés
@@ -56,10 +55,6 @@ Déclenchée à chaque `push` ou `pull request` sur `main` et `dev` :
 2. **Lint** : `flake8`, `pylint`
 3. **Test** : démarrage de `flask run` avec vérification santé
 
-📦 **Secrets protégés via GitHub Secrets** :
-- `SESSION_SECRET`
-- Variables PostgreSQL
-
 ---
 
 ### 🚀 Déploiement Continu (CD)
@@ -76,6 +71,8 @@ Déclenchée à chaque `push` ou `pull request` sur `main` et `dev` :
 
 #### 🧪 Environnement :
 ```bash
-SESSION_SECRET=<secret>
-PORT=5000
-FLASK_ENV=production
+FLASK_DEBUG=0
+FLASK_HOST=127.0.0.1
+FLASK_PORT=5000
+LOG_LEVEL=INFO
+```

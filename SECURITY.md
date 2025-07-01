@@ -64,7 +64,6 @@ If you discover a security vulnerability, please email [security@example.com](ma
 - Environment-based host binding
 - HTTPS enforcement in production
 - Debug mode disabled by default
-- Secure session configuration
 
 ## Deployment Security Checklist
 
@@ -72,10 +71,8 @@ If you discover a security vulnerability, please email [security@example.com](ma
 
 1. **Environment Variables**
    ```bash
-   export FLASK_ENV=production
    export FLASK_DEBUG=0
    export FLASK_HOST=0.0.0.0
-   export SESSION_SECRET="your-strong-secret-key"
    export FORCE_HTTPS=true
    ```
 
