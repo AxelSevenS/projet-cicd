@@ -46,33 +46,12 @@ Son but : éduquer les utilisateurs via des quiz, du contenu interactif et des c
 
 ---
 
-## 🔃 CI/CD – Intégration & Déploiement Continu
+## 🦾 CI-CD
 
-### ⚙️ Intégration Continue (CI) – *GitHub Actions*
-
-Déclenchée à chaque `push` ou `pull request` sur `main` et `dev` :
-1. **Install** : `pip install -r requirements.txt`
-2. **Lint** : `flake8`, `pylint`
-3. **Test** : démarrage de `flask run` avec vérification santé
+Les informations concernant le CI-CD se trouvent dans le fichier correspondant [CI-CD.md](CI-CD.md)
 
 ---
 
-### 🚀 Déploiement Continu (CD)
+## 👮🏻‍♂️Sécurité
 
-#### 🟢 Replit (Production Live)
-- Déploiement auto sur `main`
-- Gunicorn configuré : `0.0.0.0:5000`
-- Environnement Nix + autoscale activé
-
-#### 🖥️ VM Personnelle (Backup)
-- Pull automatique via `cron`
-- Redémarrage via `systemd`
-- Gunicorn multithread
-
-#### 🧪 Environnement :
-```bash
-FLASK_DEBUG=0
-FLASK_HOST=127.0.0.1
-FLASK_PORT=5000
-LOG_LEVEL=INFO
-```
+Les Consignes de sécurité sont rassemblées dans le fichier [SECURITY.md](SECURITY.md)

@@ -4,12 +4,10 @@ from flask import Flask, render_template, request, jsonify
 from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from functools import wraps
-import time
 
-is_debug = os.getenv('FLASK_DEBUG', '0') == '1'
+is_debug = os.getenv('FLASK_DEBUG', 'FALSE') == 'TRUE'
 log_level = logging.getLevelNamesMapping().get(os.getenv('LOG_LEVEL', 'INFO'), logging.INFO)
-app = Flask(__name__)
+app: Flask = Flask(__name__)
 
 # Configure logging
 logging.basicConfig(level=log_level)
@@ -120,27 +118,27 @@ def index():
     """Homepage with compelling environmental message"""
     return render_template('index.html')
 
-@app.route('/info')
+@app.route('/info/')
 def info():
     """Information page with environmental data and statistics"""
     return render_template('info.html')
 
-@app.route('/quiz')
+@app.route('/quiz/')
 def quiz():
     """Interactive quiz for environmental education"""
     return render_template('quiz.html')
 
-@app.route('/actions')
+@app.route('/actions/')
 def actions():
     """Action page with practical daily eco-friendly tips"""
     return render_template('actions.html')
 
-@app.route('/share')
+@app.route('/share/')
 def share():
     """Share page with social media integration"""
     return render_template('share.html')
 
-@app.route('/api/quiz/submit', methods=['POST'])
+@app.route('/api/quiz/submit/', methods=['POST'])
 @limiter.limit("10 per minute")
 def submit_quiz():
     """Handle quiz submission and return results"""
