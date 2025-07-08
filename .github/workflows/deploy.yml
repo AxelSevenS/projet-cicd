@@ -1,0 +1,47 @@
+name: Deploy
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+
+    - name: Generate static site with Frozen-Flask
+      run: |
+        pip install Frozen-Flask
+        python ./freeze_flask.py
+
+    - name: Deploy static site to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build
+
+    - name: Deploy to Replit
+      env:
+        REPLIT_TOKEN: ${{ secrets.REPLIT_TOKEN }}
+        REPLIT_REPL_ID: ${{ secrets.REPLIT_REPL_ID }}
+      run: |
+        curl -X POST \
+          -H "Authorization: Bearer $REPLIT_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{"repl_id": "'$REPLIT_REPL_ID'", "files": {"main.py": "'$(cat app.py | base64 -w 0)'"}}' \
+          https://eco-web-helper-carcazown.replit.app/refresh
