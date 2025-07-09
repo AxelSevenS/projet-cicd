@@ -7,7 +7,7 @@ Son but : éduquer les utilisateurs via des quiz, du contenu interactif et des c
 
 > 🌱 *Chaque clic compte pour la planète.*
 
-🔗 **Démo en ligne :** [EcoAlerte](https://eco-web-helper-carcazown.replit.app/)
+🔗 **Démo en ligne :** [EcoAlerte](https://rookuro.github.io/projet-cicd/)
 
 ---
 
