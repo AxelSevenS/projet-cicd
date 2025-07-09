@@ -16,6 +16,8 @@ Déclenchée à chaque `push` ou `pull request` sur toutes les branches :
 
 ### Définition dans [workflows/deploy.yml](.github/workflows/deploy.yml)
 
+Déclenchée à chaque `push` ou `pull request` sur la branche main :
+
 #### Déploiement sur Replit
 
 (Notre license Replit a expirée, donc le déploiement ne fonctionne pas, désolé)
